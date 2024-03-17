@@ -1,8 +1,8 @@
 <script setup>
- import Form from '@/components/FormLogin.vue'
+
 </script>
 
 <template>
    
-<Form />
+<h1>HOME</h1>
 </template>

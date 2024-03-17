@@ -26,7 +26,7 @@ export const useUserStore = defineStore('user', () => {
 
   //Login with OTP - One Time Password relivered on users email
   const login = async (email, callback) => {
-    const { error } = await useSupabaseClient.auth.signInWithOtp({ email });
+    const { error } = await useSupabaseClient.auth.signInWithOtp( {email} );
     if (error) {
       console.error('Login error:', error.message);
       throw new Error('Login failed');
@@ -77,5 +77,5 @@ export const useUserStore = defineStore('user', () => {
     return false
   })
 
-  return { session, login, logout, setUserSession, userIsLoggedIn, countries}
+  return { session, login, logout, setUserSession, userIsLoggedIn, countries, insertProfile}
 })

@@ -6,7 +6,7 @@ import { useSupabaseClient } from '@/composables/supabase'
 
 
 const userStore = useUserStore();
-console.log(useUserStore);
+
 
 const showDialog = ref(false);
 const email = ref("");
@@ -59,4 +59,4 @@ console.log(response);
       </v-card>
     </v-dialog>
   </v-container>
-</template>@/store/user
+</template>
