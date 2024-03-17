@@ -11,7 +11,17 @@ import router from '@/router'
 
 export const useUserStore = defineStore('user', () => {
 
+  //state
   const session = ref(null);
+
+//get data from countries
+ const countries = async()=>{
+    const { data, error } = await useSupabaseClient
+    .from('countries')
+    .select()
+  
+    console.log(data, error);
+  }
 
 
   //Login with OTP - One Time Password relivered on users email
@@ -56,6 +66,7 @@ export const useUserStore = defineStore('user', () => {
     session.value = data;
   }
 
+  //getter
   //Checking if user is still loggedIn by checking the session
   const userIsLoggedIn = computed(() => {
     if (session.value?.expires_at) {
@@ -66,5 +77,5 @@ export const useUserStore = defineStore('user', () => {
     return false
   })
 
-  return { session, login, logout, setUserSession, userIsLoggedIn}
+  return { session, login, logout, setUserSession, userIsLoggedIn, countries}
 })

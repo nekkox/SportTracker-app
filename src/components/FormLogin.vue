@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useUserStore } from "@/store/user";
+import { useSupabaseClient } from '@/composables/supabase'
+
+
 
 const userStore = useUserStore();
 console.log(useUserStore);
@@ -17,6 +20,14 @@ const login = () => {
 const resetForm = () => {
   showDialog.value = false;
 };
+
+onMounted(async()=>{
+ const response = await useSupabaseClient.from('countries').select("*")
+
+console.log(response);
+
+})
+
 
 </script>
 <template>
