@@ -2,16 +2,17 @@
 import { onMounted, ref } from "vue";
 import { useUserStore } from "@/store/user";
 import { useSupabaseClient } from '@/composables/supabase'
-
+import { useAppStore } from "@/store/app";
 
 
 const userStore = useUserStore();
-
+const appStore = useAppStore();
 
 const showDialog = ref(false);
 const email = ref("");
 
 //If login is ok then dialogbox is shown
+/*
 const login = () => {
   userStore.login(email.value);
   showDialog.value = true;
@@ -20,13 +21,40 @@ const login = () => {
 const resetForm = () => {
   showDialog.value = false;
 };
+*/
 
-onMounted(async()=>{
- const response = await useSupabaseClient.from('countries').select("*")
+const login = () => {
+  if (email.value === "") {
+    console.log("empty email");
+    appStore.showDialog({
+      title: "Email is required",
+      contents: "We use the email address to send you a one time password login link. Please enter your email address."
+    });
+  } else {
 
-console.log(response);
+    userStore.login(email.value)
+      .then(xemail => {
+        console.log(xemail);
+        appStore.showDialog({
+          title: "One Time Password login",
+          contents: `We've sent a one time password login to the following email address: <strong>${email.value}</strong>. Using the link in the email, you can proceed to the app and you can close this browser window. If this is not the correct email address, please try again.`,
+          fullscreen: true
+        });
+      })
+      .catch(error => {
+        if(error.toString().includes('Login failed')){
+          console.log("yes");
+          appStore.showDialog({
+          title: "Wrong Email",
+          contents: "Please provide a valid email address"
+        });
+        }
+        
+      });
+  }
+};
 
-})
+
 
 
 </script>
@@ -36,13 +64,12 @@ console.log(response);
       <v-card-title>Login</v-card-title>
       <v-card-text>
         <v-form @submit.prevent="login">
-          <v-text-field v-model="email" label="Email" type="email" autofocus
-          ></v-text-field>
+          <v-text-field v-model="email" label="Email" type="email" autofocus></v-text-field>
           <v-btn type="submit" color="primary">Login</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
-
+    <!---
     <v-dialog v-model="showDialog" fullscreen>
       <v-card>
         <v-card-title>One Time Password login</v-card-title>
@@ -58,5 +85,6 @@ console.log(response);
         </v-card-actions>
       </v-card>
     </v-dialog>
+  -->
   </v-container>
 </template>

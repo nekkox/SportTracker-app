@@ -23,6 +23,7 @@ export const useAppStore = defineStore("app", () => {
     router.push(page);
   };
 
+  // Global DiALOG
   const dialog = ref({
     title: "",
     contents: "",

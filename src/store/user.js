@@ -28,7 +28,7 @@ export const useUserStore = defineStore('user', () => {
   const login = async (email, callback) => {
     const { error } = await useSupabaseClient.auth.signInWithOtp( {email} );
     if (error) {
-      console.error('Login error:', error.message);
+      console.error('Login error:', error);
       throw new Error('Login failed');
     }
     if (typeof callback === 'function') callback();
@@ -37,8 +37,8 @@ export const useUserStore = defineStore('user', () => {
   const logout = async (callback)=> {
     const { error } = await useSupabaseClient.auth.signOut();
     if (error) {
-      console.error('Logout error:', error?.message);
-      throw new Error('Logout failed');
+      console.error('Logout error:', error);
+      throw new Error('Login failed');
     }
 
     //When logging out is ok then redirect to /login
