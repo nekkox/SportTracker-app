@@ -14,11 +14,11 @@ const { pageTitle, dialog } = storeToRefs(appStore);
 const currentYear = new Date().getFullYear();
 
 onMounted(async () => {
-//Authenticating users
+  //Authenticating users
   const { data } = await useSupabaseClient.auth.getSession();
-//data is null if user is not signed-in or has logged out
- 
-if (data && data.session && data.session.user) {
+  //data is null if user is not signed-in or has logged out
+
+  if (data && data.session && data.session.user) {
     await userStore.insertProfile(data.session);
     userStore.setUserSession(data.session);
   }
@@ -32,18 +32,20 @@ if (data && data.session && data.session.user) {
 
 <template>
   <v-app>
-   <AppMenu />
-   <v-app-bar app style="position: relative">
-    <v-app-bar-nav-icon @click="appStore.toggleDrawer()"></v-app-bar-nav-icon>
-<v-toolbar-title>💪 Fittest Pal - {{ pageTitle }}</v-toolbar-title>
-</v-app-bar>
+    <AppMenu /> //creates v-app-draver
+    <v-app-bar app style="position: fixed">
+      <v-app-bar-nav-icon @click="appStore.toggleDrawer()"></v-app-bar-nav-icon>
+      <v-toolbar-title>💪 Fittest Pal - {{ pageTitle }}</v-toolbar-title>
+    </v-app-bar>
     <v-main>
       <router-view />
 
       <v-dialog v-model="dialog.visible" :fullscreen="dialog.fullscreen">
         <v-card>{{ console.log(dialog) }}
           <v-card-title>{{ dialog.title }}</v-card-title>
-          <v-card-text><p v-html="dialog.contents"></p> </v-card-text>
+          <v-card-text>
+            <p v-html="dialog.contents"></p>
+          </v-card-text>
           <v-card-actions>
             <v-btn color="primary" @click="appStore.hideDialog">Close</v-btn>
           </v-card-actions>
@@ -53,7 +55,7 @@ if (data && data.session && data.session.user) {
     </v-main>
 
     <v-footer app>
-<span>&copy; {{ currentYear }} 💪 Fittest Pal Fitness Tracker</span>
-</v-footer>
+      <span>&copy; {{ currentYear }} 💪 Fittest Pal Fitness Tracker</span>
+    </v-footer>
   </v-app>
 </template>

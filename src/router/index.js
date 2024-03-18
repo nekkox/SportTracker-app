@@ -32,7 +32,7 @@ const routes = [
     component: () => import("@/layouts/default/Default.vue"),
     children: [
       {
-        path: "",
+        path: "/",
         name: "Home",
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
         beforeEnter: loginGuard
@@ -42,6 +42,12 @@ const routes = [
         name: "Login",
         component: () => import(/* webpackChunkName: "home" */ '@/views/Login.vue'),
         beforeEnter: loggedInGuard
+      },
+      {
+        path: "/track",
+        name: "Track",
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Track.vue'),
+        beforeEnter: loginGuard
       },
     ],
   },
