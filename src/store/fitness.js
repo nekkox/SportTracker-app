@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from 'pinia';
 import { useSupabaseClient } from '@/composables/supabase'
+import { useUserStore } from "@/store/user";
 
 
 export const useFitnessStore = defineStore('fitness', () => {
@@ -27,6 +28,69 @@ export const useFitnessStore = defineStore('fitness', () => {
     getExercises()
 
 
+
+    const insertWorkout = async (date, profile_id) => {
+        try {
+            const { data, error } = await useSupabaseClient
+                .from('workouts')
+                .insert({ created_at: date, profile_id: profile_id })
+                .select()
+
+            if (error) throw error;
+            const workoutId = data?.[0].id
+            return workoutId
+        } catch (error) {
+            console.error(error.message);
+            return error;
+        }
+    }
+
+    const insertSets = async (sets = []) => {
+        try {
+            const { error } = await useSupabaseClient
+                .from('sets')
+                .insert(sets)
+
+            if (error) throw error;
+        } catch (error) {
+            console.error(error.message);
+            return error;
+        }
+    }
+
+    const saveWorkout = async (workout) => {
+
+        const userStore = useUserStore()
+        const { session } = userStore
+
+        if (session?.user?.id === undefined) return
+        const { id } = session.user;
+
+        try {
+            const workoutId = await insertWorkout(workout.date, id)
+            if (workoutId) {
+                const sets = [];
+
+                for (const routine of workout.routines) {
+                    for (const innerRoutine of routine.routines) {
+                        sets.push({
+                            exercise_id: routine.exercise || '',
+                            workout_id: workoutId,
+                            profile_id: id,
+                            weight: innerRoutine.weight,
+                            repetitions: innerRoutine.repetitions
+                        });
+                    }
+                }
+
+                await insertSets(sets);
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+
   
-    return {exercises, getExercises }
+    return {exercises, getExercises, insertWorkout, saveWorkout  }
   })

@@ -5,6 +5,11 @@ const selectedDate = ref(undefined);
 
 import AddRoutine from "./AddRoutine.vue";
 
+import { useFitnessStore } from '@/store/fitness'
+const fitnessStore = useFitnessStore()
+import { useAppStore } from "@/store/app";
+const appStore = useAppStore();
+
 
 const routines = ref([]);
 const showDialogRoutine = ref(false);
@@ -27,7 +32,40 @@ const formattedDate = computed(() => {
     return "";
 });
 
+//Check if any routines are inserted
+const canSaveWorkout = computed(() => {
+    return routines.value.length > 0;
+});
 
+const reset = () => {
+    routines.value = [];
+    selectedDate.value = undefined;
+};
+
+
+const saveWorkout = () => {
+    if (selectedDate.value && routines.value?.length > 0) {
+        fitnessStore.saveWorkout({
+            date: selectedDate.value,
+            routines: routines.value,
+        });
+        appStore.showDialog({
+            title: "Success",
+            contents: "Workout saved successfully",
+        });
+        console.log('SAVED:');
+        reset();
+    } else {
+        appStore.showDialog({
+            title: "Error",
+            contents: "Please select a date and add at least one routine",
+        });
+    }
+};
+
+const checkResult = async () => console.log(await fitnessStore.insertWorkout(new Date(), '851dc083-190c-4964-b510-04e8712db398'))
+
+console.log(checkResult());
 </script>
 <template>
     <h1>TrackExercise</h1>
@@ -48,17 +86,23 @@ const formattedDate = computed(() => {
         {{ routines }}
 
         <v-row class="mb-6">
-            <v-btn block size="x-large" @click="showDialogRoutine=true" v-if="selectedDate">Add routine</v-btn>
-            <v-dialog v-model="showDialogRoutine" >
+            <v-btn block size="x-large" @click="showDialogRoutine = true" v-if="selectedDate">Add routine</v-btn>
+            <v-dialog v-model="showDialogRoutine">
                 <v-card>
                     <v-card-text>
                         <AddRoutine @add="addRoutineToExercise" />
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn color="primary" @click="showDialogRoutine=false">Close</v-btn>
+                        <v-btn color="primary" @click="showDialogRoutine = false">Close</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
+        </v-row>
+
+
+        <v-row class="mb-6">
+            <v-btn block size="x-large" :disabled="!canSaveWorkout" @click="saveWorkout" v-if="selectedDate">Save
+                workout</v-btn>
         </v-row>
 
     </v-container>
