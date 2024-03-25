@@ -65,6 +65,7 @@ export const useFitnessStore = defineStore('fitness', () => {
 
         if (session?.user?.id === undefined) return
         const { id } = session.user;
+        console.log('Session ID:',id);
 
         try {
             const workoutId = await insertWorkout(workout.date, id)
