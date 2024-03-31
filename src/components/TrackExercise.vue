@@ -63,9 +63,9 @@ const saveWorkout = () => {
     }
 };
 
-const checkResult = async () => console.log(await fitnessStore.insertWorkout(new Date(), '851dc083-190c-4964-b510-04e8712db398'))
+//const checkResult = async () => console.log(await fitnessStore.insertWorkout(new Date(), '851dc083-190c-4964-b510-04e8712db398'))
 
-console.log(checkResult());
+//console.log(checkResult());
 </script>
 <template>
     <h1>TrackExercise</h1>
