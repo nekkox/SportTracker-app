@@ -8,6 +8,39 @@ export const useFitnessStore = defineStore("fitness", () => {
 
   const dashboard = ref();
 
+  const workouts =  ref([]);
+
+
+  const getWorkouts = async (options = { order: 'ascending' }) => {
+    try {
+
+        const userStore = useUserStore()
+        const { session } = userStore
+
+        if (session?.user?.id === undefined) return
+        const { id } = session.user;
+
+        const order = { ascending: options.order === 'ascending' }
+
+        const { data, error, status } = await useSupabaseClient
+            .from('workout_history_view')
+            .select()
+            .eq('profile_id', id)
+            .order('workout_created_at', order)
+
+        if (error && status !== 406) throw error
+
+        if (data) {
+            workouts.value = data
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+getWorkouts({ order: 'descending' })
+
+
+
   const getDashboard = async () => {
     try {
 
@@ -113,5 +146,5 @@ getDashboard()
     }
   };
 
-  return { exercises, getExercises, saveWorkout, dashboard, getDashboard };
+  return { exercises, getExercises, saveWorkout, dashboard, getDashboard, getWorkouts };
 });
