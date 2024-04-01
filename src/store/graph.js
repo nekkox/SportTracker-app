@@ -10,6 +10,7 @@ export const useGraphStore = defineStore('graph', () => {
     return workouts;
   };
 
+  // helper function to gather and format the data based on a monthly average.
   const createGraphData = async (workouts) => {
     const monthlyAverages = {};
 
@@ -47,6 +48,8 @@ export const useGraphStore = defineStore('graph', () => {
     return monthlyAverages;
   };
 
+
+
   const getGraphMonthlyAverage = async () => {
     const workouts = await getWorkouts();
     if (!workouts) return;
@@ -59,6 +62,8 @@ export const useGraphStore = defineStore('graph', () => {
     return { labels, datasets };
   };
 
+
+  //getting the workout data from database and returning it as an object that’s compatible with a pie chart
   const getGraphPie = async () => {
     const workouts = await getWorkouts();
     if (!workouts) return;

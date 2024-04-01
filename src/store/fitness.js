@@ -105,9 +105,7 @@ export const useFitnessStore = defineStore("fitness", () => {
       try {
 
           const userStore = useUserStore()
-          console.log(userStore);
           const { session } = userStore
-          console.log(session);
 
           if (session?.user?.id === undefined) return
           const { id } = session.user;
@@ -148,6 +146,7 @@ export const useFitnessStore = defineStore("fitness", () => {
 
           const order = { ascending: options.order === 'ascending' }
 
+          // Creating summary of workaout by joining tables: workouts, sets and exercises
           const { data, error, status } = await useSupabaseClient
               .from('workouts')
               .select(`
