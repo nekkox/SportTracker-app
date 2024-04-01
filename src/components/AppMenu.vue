@@ -18,7 +18,17 @@ const menuItems = [
         icon: "mdi-dumbbell",
         title: "Track",
         page: "/track",
-    }
+    },
+    {
+        icon: "mdi-home",
+        title: "Home",
+        page: "/",
+    },
+    {
+        icon: "mdi-chart-line",
+        title: "Graph",
+        page: "/graph",
+    },
 ]
 
 

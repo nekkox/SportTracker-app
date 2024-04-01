@@ -6,6 +6,9 @@ import AppMenu from "./components/AppMenu.vue";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/app";
 
+const fitnessStore = useFitnessStore()
+import { useFitnessStore } from '@/store/fitness'
+
 
 const userStore = useUserStore();
 const appStore = useAppStore();
@@ -13,14 +16,22 @@ const appStore = useAppStore();
 const { pageTitle, dialog } = storeToRefs(appStore);
 const currentYear = new Date().getFullYear();
 
+
+
+
 onMounted(async () => {
   //Authenticating users
   const { data } = await useSupabaseClient.auth.getSession();
   //data is null if user is not signed-in or has logged out
 
+
   if (data && data.session && data.session.user) {
     await userStore.insertProfile(data.session);
     userStore.setUserSession(data.session);
+
+    //!!!!
+    await fitnessStore.getDashboard();
+
   }
 
   useSupabaseClient.auth.onAuthStateChange((_, _session) => {
@@ -55,6 +66,7 @@ onMounted(async () => {
     </v-main>
 
     <v-footer app>
+      
       <span>&copy; {{ currentYear }} 💪 Fittest Pal Fitness Tracker</span>
     </v-footer>
   </v-app>

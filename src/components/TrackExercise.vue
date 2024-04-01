@@ -1,24 +1,13 @@
 <script setup>
-import { ref, computed } from "vue"
-const showDialogDate = ref(false);
-const selectedDate = ref(undefined);
-
-import AddRoutine from "./AddRoutine.vue";
-
+import { ref, computed, onMounted } from "vue"
 import { useFitnessStore } from '@/store/fitness'
 const fitnessStore = useFitnessStore()
 import { useAppStore } from "@/store/app";
 const appStore = useAppStore();
 
 
-const routines = ref([]);
-const showDialogRoutine = ref(false);
-
-
-const addRoutineToExercise = (newRoutine) => {
-    showDialogRoutine.value = false;
-    routines.value.push(newRoutine);
-};
+const showDialogDate = ref(false);
+const selectedDate = ref(undefined);
 
 const formattedDate = computed(() => {
     if (selectedDate.value) {
@@ -31,6 +20,20 @@ const formattedDate = computed(() => {
     }
     return "";
 });
+
+import AddRoutine from "./AddRoutine.vue";
+import ExerciseGrouping from "./ExerciseGrouping.vue"
+
+const routines = ref([]);
+const showDialogRoutine = ref(false);
+
+
+const addRoutineToExercise = (newRoutine) => {
+    showDialogRoutine.value = false;
+    routines.value.push(newRoutine);
+};
+
+
 
 //Check if any routines are inserted
 const canSaveWorkout = computed(() => {
@@ -66,6 +69,22 @@ const saveWorkout = () => {
 //const checkResult = async () => console.log(await fitnessStore.insertWorkout(new Date(), '851dc083-190c-4964-b510-04e8712db398'))
 
 //console.log(checkResult());
+//const checkResult = async ()=> await fitnessStore.getExercises()
+async function fetchExercises() {
+  try {
+    const result = await fitnessStore.getWorkouts();
+    console.log(result);
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+}
+
+onMounted(() => {
+    console.log("mounted");
+    console.log(fitnessStore.workouts);
+    fetchExercises();
+})
+
 </script>
 <template>
     <h1>TrackExercise</h1>
@@ -104,6 +123,8 @@ const saveWorkout = () => {
             <v-btn block size="x-large" :disabled="!canSaveWorkout" @click="saveWorkout" v-if="selectedDate">Save
                 workout</v-btn>
         </v-row>
+
+        <ExerciseGrouping :key="index" v-for="(row, index) in routines" :exercise-id="row.exercise || 'Unknown'" :routines="row?.routines" class="mb-6" />
 
     </v-container>
 </template>

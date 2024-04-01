@@ -13,9 +13,17 @@ const daysSinceLastWorkout = computed(() => {
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
 });
-onMounted(() => {
+
+
+
+
+onMounted(async () => {
     fitnessStore.getDashboard();
 });
+
+
+
+
 </script>
 
 <template>

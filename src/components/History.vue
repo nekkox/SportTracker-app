@@ -23,6 +23,7 @@ const formattedDate = (date) => {
   return "";
 };
 
+
 //every unique workout has a collection of corresponding exercises as a child
 const workoutsById = (workouts = []) =>
   workouts.reduce((acc, curr) => {
@@ -59,8 +60,8 @@ onMounted(() => {
     <WorkoutStats class="mb-4" />
       <h1>Past workouts</h1>
       <v-expansion-panels v-model="panel" multiple v-if="workouts">
-        <v-expansion-panel v-for="workout in workouts" :key="workout.workout_id">
-          <v-expansion-panel-title>{{ formattedDate(new Date(workout.workout_created_at)) }}</v-expansion-panel-title>
+        <v-expansion-panel v-for="id in workoutIds" :key="id">
+          <v-expansion-panel-title>{{ formattedDate(new Date(workoutsGroupedById[id].workout_created_at)) }}</v-expansion-panel-title>
           <v-expansion-panel-text>
             
             <GroupedExerciseView 
