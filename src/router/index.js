@@ -49,6 +49,12 @@ const routes = [
         component: () => import(/* webpackChunkName: "home" */ '@/views/Track.vue'),
         beforeEnter: loginGuard
       },
+      {
+        path: 'graph',
+        name: 'Graph',
+        component: () => import(/* webpackChunkName: "graph" */ '@/views/Graph.vue'),
+        beforeEnter: loginGuard
+        }
     ],
   },
 ];

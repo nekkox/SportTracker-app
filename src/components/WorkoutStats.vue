@@ -15,13 +15,9 @@ const daysSinceLastWorkout = computed(() => {
 });
 
 
-
-
 onMounted(async () => {
     fitnessStore.getDashboard();
 });
-
-
 
 
 </script>

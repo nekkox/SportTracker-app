@@ -53,7 +53,8 @@ watch(exercise, () => {
                         <v-expansion-panel-text>
                             <v-row>
                                 <v-col cols="4" sm="5" class="align-center">
-                                    <v-text-field label="Weight" type="number" autofocus v-model="weight"></v-text-field>
+                                    <v-text-field label="Weight" type="number" autofocus
+                                        v-model="weight"></v-text-field>
                                 </v-col>
                                 <v-col cols="4" sm="5" class="align-center">
                                     <v-text-field label="Reps" type="number" v-model="repetitions"></v-text-field>
@@ -73,11 +74,12 @@ watch(exercise, () => {
                             Summary
 
                             <template v-slot:actions="{ expanded }">
-                                <v-badge v-if="routine.routines.length > 0" :content="routine.routines.length" color="error" class="mr-6"> 
-                                    
+                                <v-badge v-if="routine.routines.length > 0" :content="routine.routines.length"
+                                    color="error" class="mr-6">
+
                                 </v-badge>
                                 <v-icon :icon="expanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"></v-icon>
-                               
+
                             </template>
                         </v-expansion-panel-title>
 
