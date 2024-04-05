@@ -13,7 +13,9 @@ const panel = ref([null]);
         <v-expansion-panel>
           <v-expansion-panel-title>Workout distribution all time (sets & reps)</v-expansion-panel-title>
           <v-expansion-panel-text>
+            
             <GraphPie />
+           
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel>

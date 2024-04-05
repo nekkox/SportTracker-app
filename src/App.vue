@@ -31,43 +31,51 @@ onMounted(async () => {
 
     //!!!!
     await fitnessStore.getDashboard();
-
+    //const ddd = await fitnessStore.getWorkoutsbyData(new Date())
+    //console.log('uuuu', ddd);
+    
   }
 
   useSupabaseClient.auth.onAuthStateChange((_, _session) => {
     userStore.setUserSession(_session);
   });
+
+await fitnessStore.getTodaysWorkout()
+
 })
 
 </script>
 
+
+
+
 <template>
-  <v-app>
-    <AppMenu /> //creates v-app-draver
-    <v-app-bar app style="position: fixed">
-      <v-app-bar-nav-icon @click="appStore.toggleDrawer()"></v-app-bar-nav-icon>
-      <v-toolbar-title>💪 Fittest Pal - {{ pageTitle }}</v-toolbar-title>
-    </v-app-bar>
-    <v-main>
-      <router-view />
+  <v-app theme="dark" full-height>
+    <div class="">
+      <app-menu />
+      <v-app-bar app height="40" >
+        <v-app-bar-nav-icon @click="appStore.toggleDrawer()"></v-app-bar-nav-icon>
+        <v-toolbar-title>💪 Fittest Pal - {{ pageTitle }}</v-toolbar-title>
+      </v-app-bar>
 
-      <v-dialog v-model="dialog.visible" :fullscreen="dialog.fullscreen">
-        <v-card>{{ console.log(dialog) }}
-          <v-card-title>{{ dialog.title }}</v-card-title>
-          <v-card-text>
-            <p v-html="dialog.contents"></p>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" @click="appStore.hideDialog">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
 
-    </v-main>
 
-    <v-footer app>
-      
-      <span>&copy; {{ currentYear }} 💪 Fittest Pal Fitness Tracker</span>
-    </v-footer>
+
+<v-container>
+      <v-main app style="height: calc(100vh - 70px); overflow: hidden; ">
+        <div>
+
+          <!-- If using vue-router -->
+          <router-view></router-view>
+          
+        </div>
+     
+      </v-main>
+    </v-container>
+      <v-footer app>
+        <span>&copy; {{ currentYear }} 💪 Fittest Pal Fitness Tracker</span>
+      </v-footer>
+    </div>
   </v-app>
 </template>
+

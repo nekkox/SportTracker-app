@@ -4,12 +4,31 @@ import { useFitnessStore } from '@/store/fitness'
 const fitnessStore = useFitnessStore()
 import { useAppStore } from "@/store/app";
 const appStore = useAppStore();
+import { storeToRefs } from "pinia";
+const { workoutsWithSets } = storeToRefs(fitnessStore);
+import { useDateWithoutTime } from "@/composables/date_formatting";
 
+const exercisesOnDay = ref()
+const props = defineProps(['today'])
+const showToday = ref(true)
+const noExercises = ref(false)
+
+const computedtoday = computed(() => {
+
+    return props.today
+
+})
+
+const { todayWorkouts } = storeToRefs(fitnessStore);
+console.log('ii', todayWorkouts);
 
 const showDialogDate = ref(false);
-const selectedDate = ref(undefined);
+const selectedDate = ref();
+
+
 
 const formattedDate = computed(() => {
+    console.log('computed', selectedDate.value);
     if (selectedDate.value) {
         return new Intl.DateTimeFormat("en-US", {
             weekday: "long",
@@ -20,6 +39,28 @@ const formattedDate = computed(() => {
     }
     return "";
 });
+
+
+const fullName = computed({
+    // getter
+    get() {
+        if (selectedDate.value) {
+            return new Intl.DateTimeFormat("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            }).format(selectedDate.value);
+        }
+        return "";
+    },
+    // setter
+    set(newValue) {
+        // Note: we are using destructuring assignment syntax here.
+        selectedDate.value = newValue.split(' ')
+    }
+})
+
 
 import AddRoutine from "./AddRoutine.vue";
 import ExerciseGrouping from "./ExerciseGrouping.vue"
@@ -42,21 +83,30 @@ const canSaveWorkout = computed(() => {
 
 const reset = () => {
     routines.value = [];
-    selectedDate.value = undefined;
+    //selectedDate.value = new Date();
 };
+
 
 
 const saveWorkout = () => {
     if (selectedDate.value && routines.value?.length > 0) {
+
+        //Formt selectedDate to have actual time as well
+        console.log('Prepared date', selectedDate.value);
+        const dateString = selectedDate.value
+        const formattedDateString = useDateWithoutTime(dateString);
+        console.log(formattedDateString);
+
+
         fitnessStore.saveWorkout({
-            date: selectedDate.value,
+            date: formattedDateString,
             routines: routines.value,
         });
         appStore.showDialog({
             title: "Success",
             contents: "Workout saved successfully",
         });
-        console.log('SAVED:');
+        console.log('SAVED:', selectedDate.value);
         reset();
     } else {
         appStore.showDialog({
@@ -66,40 +116,103 @@ const saveWorkout = () => {
     }
 };
 
-//const checkResult = async () => console.log(await fitnessStore.insertWorkout(new Date(), '851dc083-190c-4964-b510-04e8712db398'))
+onMounted(async () => {
 
-//console.log(checkResult());
-//const checkResult = async ()=> await fitnessStore.getExercises()
-async function fetchExercises() {
-  try {
-    const result = await fitnessStore.getWorkouts();
-    console.log(result);
-  } catch (error) {
-    console.error("Error occurred:", error);
-  }
+    //get todays workout
+    //const ddd = await fitnessStore.getWorkoutsbyDate(new Date())
+    //console.log('uuuu', ddd[0]);
+
+    //await getPonies()
+    console.log(exercisesOnDay.value);
+    //showToday.value = false
+});
+
+
+const getPonies = async () => {
+    console.log("Getting workouts by given date");
+    console.log('Data in ponies', selectedDate.value);
+    if(selectedDate.value == undefined){
+        selectedDate.value = new Date()
+    }
+    await fitnessStore.getWorkoutsbyDate(selectedDate.value)
+    const response = fitnessStore.byDate
+    if (response.length > 0) {
+        exercisesOnDay.value = response.map(entry => ({
+            name: entry.sets[0].exercises.name,
+            weight: entry.sets[0].weight,
+            repetitions: entry.sets[0].repetitions
+        }));
+        noExercises.value = false
+    }
+    else {
+        console.log("No exercises this day")
+        exercisesOnDay.value = null
+        showToday.value=false
+        noExercises.value = true
+        
+    }
+
+    //const { byDate } = storeToRefs(fitnessStore);
+    //console.log('RES3', byDate.value[0]);
+   // console.log('RES3ALL', byDate.value);
+    //return "vego"
+
 }
 
-onMounted(() => {
-    console.log("mounted");
-    console.log(fitnessStore.workouts);
-    fetchExercises();
-})
+
+//exercisesOnDay.value = todayWorkouts
+//console.log('start', exercisesOnDay.value);
+
+function getCurrentDate(date) {
+    
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1; // Adding 1 because months are zero-based
+    let day = date.getDate();
+
+    // Add leading zeros if month/day is a single digit
+    month = month < 10 ? '0' + month : month;
+    day = day < 10 ? '0' + day : day;
+
+    return `${year}-${month}-${day}`;
+}
 
 </script>
 <template>
-    <h1>TrackExercise</h1>
 
+    <br>
+    <h1>TrackExercise</h1>
+    <br>
+    <v-divider></v-divider>
+    <br>
+
+    NAME {{ fullName }}
     <v-container>
+
+
+
+
+
+
         <v-row class="align-center justify-space-between mb-6">
             <v-btn @click="showDialogDate = true">
                 <span v-if="selectedDate">Change date</span>
                 <span v-else>Select date</span>
             </v-btn>
             {{ formattedDate }}
-            <v-dialog v-model="showDialogDate" center>
-                <v-date-picker v-model="selectedDate" show-adjacent-months @click:cancel="showDialogDate = false"
-                    @click:save="showDialogDate = false" style="margin: 0 auto"></v-date-picker>
-            </v-dialog>
+            <div class="text-center" id="xxx">
+                <v-dialog v-model="showDialogDate" width="auto">
+                    <v-card max-width="350px" class="d-flex align-center justify-center">
+                        <v-date-picker v-model="selectedDate" show-adjacent-months
+                            @click:cancel="showDialogDate = false" @click:save="showDialogDate = false" style="margin: 0 auto"></v-date-picker>
+
+                        <template v-slot:actions>
+                            <v-btn class="ms-auto" text="Ok" @click="showDialogDate = false; getPonies()"></v-btn>
+                            <v-btn class="ms-auto" text="Cancel" @click="showDialogDate = false"></v-btn>
+                        </template>
+                    </v-card>
+
+                </v-dialog>
+            </div>
         </v-row>
 
         {{ routines }}
@@ -124,7 +237,79 @@ onMounted(() => {
                 workout</v-btn>
         </v-row>
 
-        <ExerciseGrouping :key="index" v-for="(row, index) in routines" :exercise-id="row.exercise || 'Unknown'" :routines="row?.routines" class="mb-6" />
+        <ExerciseGrouping :key="index" v-for="(row, index) in routines" :exercise-id="row.exercise || 'Unknown'"
+            :routines="row?.routines" class="mb-6" />
+        <v-btn @click="getPonies()">GET ALL</v-btn>
+        <br><br><br><br>
+        <v-row class="d-flex justify-center" width="100%">
+            <v-card>
 
+{{ console.log(selectedDate) }}
+                <v-table v-if="exercisesOnDay && exercisesOnDay.length > 0" height="auto" fixed-header>
+                    <template v-slot:top>
+                                <div class="bg-amber-accent-1 d-flex justify-center align-center" style="height: 35px;">
+                                    <h2 class="text-center">{{getCurrentDate(selectedDate) == getCurrentDate(new Date()) ? 'Todays\'s Routines' : fullName}}</h2>
+                                </div>
+                            </template>
+                    <thead>
+                        <tr>
+                            <th class="text-left text-pink">
+                                Exercise Name
+                            </th>
+                            <th class="text-left text-pink">
+                                Weight
+                            </th>
+                            <th class="text-left text-pink">
+                                Repetitions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(row, index) in exercisesOnDay" :key="index">
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.weight }}</td>
+                            <td>{{ row.repetitions }}</td>
+                        </tr>
+                    </tbody>
+                </v-table>
+
+
+                <div v-if="Array.isArray(computedtoday) && !exercisesOnDay && showToday">
+                    
+                        <v-table height="auto" fixed-header>
+                            <template v-slot:top>
+                                <div class="bg-amber-accent-1 d-flex justify-center align-center" style="height: 35px;">
+                                    <h2 class="text-center">Todays's Routines</h2>
+                                </div>
+                            </template>
+
+                            <thead>
+                                <tr>
+                                    <th class="text-left text-pink">
+                                        Exercise Name
+                                    </th>
+                                    <th class="text-left text-pink">
+                                        Weight
+                                    </th>
+                                    <th class="text-left text-pink">
+                                        Repetitions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(row, index) in computedtoday" :key="index">
+                                    <td>{{ row.sets[0].exercises.name }}</td>
+                                    <td>{{ row.sets[0].weight }}</td>
+                                    <td>{{ row.sets[0].repetitions }}</td>
+                                </tr>
+                            </tbody>
+                        </v-table>
+                    
+                </div>
+                <h2 v-if="noExercises">NO ROUTINES FOR THIS DAY</h2>
+            </v-card>
+        </v-row>
     </v-container>
+{{ console.log(new Date()) }}
 </template>
+@/composables/date_formatting
