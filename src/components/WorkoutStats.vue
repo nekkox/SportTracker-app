@@ -23,30 +23,25 @@ onMounted(async () => {
 </script>
 
 <template>
-    <v-row>
-        <v-col cols="12" sm="3" m="2" class="d-flex justify-space-between">
-            <v-card class="align-self-stretch flex-grow-1">
-                <v-card-title>{{ daysSinceLastWorkout }}</v-card-title>
-                <v-card-text>Days since last workout</v-card-text>
-            </v-card>
-        </v-col>
-        <v-col cols="12" sm="3" m="2" class="d-flex justify-space-between">
-            <v-card class="align-self-stretch flex-grow-1">
-                <v-card-title>{{ dashboard?.total_workouts || 0 }}</v-card-title>
-                    <v-card-text>Total workouts</v-card-text>
-            </v-card>
-        </v-col>
-        <v-col cols="12" sm="3" m="2" class="d-flex justify-space-between">
-            <v-card class="align-self-stretch flex-grow-1">
-                <v-card-title>{{ dashboard?.cumulative_weight || 0 }}</v-card-title>
-                    <v-card-text>Cumulative weight moved</v-card-text>
-            </v-card>
-        </v-col>
-        <v-col cols="12" sm="3" m="2" class="d-flex justify-space-between">
-            <v-card class="align-self-stretch flex-grow-1">
-                <v-card-title>{{ dashboard?.most_weight_single_workout || 0 }} </v-card-title>
-                <v-card-text>Most weight in a single workout</v-card-text>
-            </v-card>
-        </v-col>
-    </v-row>
+
+    <div class="d-flex flex-wrap ga-4">
+        <v-card color="blue" width="200px" height="90" class="align-self-stretch flex-grow-1 text-center">
+            <v-card-title>{{ daysSinceLastWorkout }}</v-card-title>
+            <v-card-text>Days since last workout</v-card-text>
+        </v-card>
+        <v-card color="blue" width="200px" height="90" class="align-self-stretch flex-grow-1 text-center">
+            <v-card-title>{{ dashboard?.total_workouts || 0 }}</v-card-title>
+            <v-card-text>Total workouts</v-card-text>
+
+        </v-card>
+        <v-card color="blue" width="200px" height="90" class="align-self-stretch flex-grow-1 text-center">
+            <v-card-title>{{ dashboard?.cumulative_weight || 0 }}</v-card-title>
+            <v-card-text>Cumulative weight moved</v-card-text>
+
+        </v-card>
+        <v-card color="blue" width="200px" height="90" class="align-self-stretch flex-grow-1 text-center">
+            <v-card-title>{{ dashboard?.most_weight_single_workout || 0 }} </v-card-title>
+            <v-card-text>Most weight in a single workout</v-card-text>
+        </v-card>
+    </div>
 </template>

@@ -15,6 +15,7 @@ onMounted(async()=>{
 
 </script>
 <template>
-       
+<div style="height: auto; width: 1000px;">
 <TrackExercise :today="todayWorks"/>
+</div>
 </template>

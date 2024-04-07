@@ -7,8 +7,9 @@ import GraphLine from '@/components/GraphLine.vue'
 const panel = ref([null]);
 </script>
 <template>
- <v-container>
-      <h1>Graphs</h1>
+ <v-container style="width: 500px;">
+      <h1>Check your progress: </h1>
+      <br>
       <v-expansion-panels v-model="panel" accordion>
         <v-expansion-panel>
           <v-expansion-panel-title>Workout distribution all time (sets & reps)</v-expansion-panel-title>

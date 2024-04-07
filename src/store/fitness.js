@@ -219,46 +219,16 @@ export const useFitnessStore = defineStore("fitness", () => {
   };
   getDashboard();
 
-  //------------------------------//
-
-  const dateFormatting = (dateStr) => {
-    const dateString = String(dateStr);
-    const dateObj = new Date(dateString);
-
-    const year = dateObj.getFullYear();
-    const month = (dateObj.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-indexed, so adding 1
-    const day = dateObj.getDate().toString().padStart(2, "0");
-
-    const formattedDate = `${year}-${month}-${day}`;
-    return formattedDate;
-  };
-
-  const formatDatePlusOne = (date) => {
-    const dateObj = new Date(date);
-    // Increment the day by one
-    dateObj.setDate(dateObj.getDate() + 1);
-
-    // Convert back to string with desired format
-    const year = dateObj.getFullYear();
-    const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
-    const day = dateObj.getDate().toString().padStart(2, "0");
-
-    const newDateString = `${year}-${month}-${day}`;
-    return newDateString;
-  };
-
 
 
   const byDate = ref([]);
 //Get workouts creaed at given date
   const getWorkoutsbyDate = async (date, options = { order: "ascending" }) => {
     
-    console.log('GETTING BY DATA', date);
-    console.log('FORMATTTTED', useDateWithDashes(date) );
     const formattedDate = useDateWithDashes(date)
-    const gte = dateFormatting(date);
-    const lt = formatDatePlusOne(gte);
-    console.log('DATAAAAAAAAAAAAAAAA', date);
+    //const gte = dateFormatting(date);
+    //const lt = formatDatePlusOne(gte);
+    
     try {
       const userStore = useUserStore();
       const { session } = userStore;

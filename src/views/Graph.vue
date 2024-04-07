@@ -5,6 +5,5 @@ import Graph from "@/components/Graph.vue";
 
 
 <template>
-    <h1>Hello from Graph</h1>
-    <Graph/>
+   <Graph/>
 </template>
