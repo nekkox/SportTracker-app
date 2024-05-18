@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted, ref } from "vue";
 import { useUserStore } from "@/store/user";
 import { useSupabaseClient } from '@/composables/supabase'
@@ -42,14 +42,14 @@ const login = () => {
         });
       })
       .catch(error => {
-        if(error.toString().includes('Login failed')){
+        if (error.toString().includes('Login failed')) {
           console.log("yes");
           appStore.showDialog({
-          title: "Wrong Email",
-          contents: "Please provide a valid email address"
-        });
+            title: "Wrong Email",
+            contents: "Please provide a valid email address"
+          });
         }
-        
+
       });
   }
 };
@@ -60,8 +60,8 @@ const login = () => {
 </script>
 <template>
   <v-container>
-    <v-card>
-      <v-card-title>Login</v-card-title>
+    <v-card min-width="100px" min-height="50" style="background-color:#383838;">
+      <v-card-title>Login With OTP</v-card-title>
       <v-card-text>
         <v-form @submit.prevent="login">
           <v-text-field v-model="email" label="Email" type="email" autofocus></v-text-field>

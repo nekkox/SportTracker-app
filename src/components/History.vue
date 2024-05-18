@@ -37,7 +37,7 @@ const workoutsById = (workouts = []) =>
     return acc;
   }, {});
 
-  const setsByExerciseName = (sets) =>
+const setsByExerciseName = (sets) =>
   sets.reduce((acc, curr) => {
     if (!acc[curr.exercise_name]) acc[curr.exercise_name] = [];
     acc[curr.exercise_name].push(curr);
@@ -58,19 +58,18 @@ onMounted(() => {
 <template>
   <v-container>
     <WorkoutStats class="mb-4" />
-      <h1>Past workouts</h1>
-      <v-expansion-panels v-model="panel" multiple v-if="workouts">
-        <v-expansion-panel v-for="id in workoutIds" :key="id">
-          <v-expansion-panel-title>{{ formattedDate(new Date(workoutsGroupedById[id].workout_created_at)) }}</v-expansion-panel-title>
-          <v-expansion-panel-text>
-            
-            <GroupedExerciseView 
-            :exercise="set" 
-            v-for="(set, index) in 
+    <h1>Past workouts</h1>
+    <v-expansion-panels v-model="panel" multiple v-if="workouts">
+      <v-expansion-panel v-for="id in workoutIds" :key="id">
+        <v-expansion-panel-title>{{ formattedDate(new Date(workoutsGroupedById[id].workout_created_at))
+          }}</v-expansion-panel-title>
+        <v-expansion-panel-text>
+
+          <GroupedExerciseView :exercise="set" v-for="(set, index) in 
             setsByExerciseName(workoutsGroupedById[id].sets)" :key="index" />
 
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </v-container>
 </template>

@@ -15,8 +15,8 @@ defineProps({
         <v-row class="">
             <v-col cols="12" class="">
                 <div class="">
-                <h5 class="text-h1">{{ exercise.exerciseName }}</h5>
-            </div>
+                    <h5 class="text-h1">{{ exercise.exerciseName }}</h5>
+                </div>
             </v-col>
         </v-row>
         <v-row v-for="(routine, index) in exercise.routines" :key="index">

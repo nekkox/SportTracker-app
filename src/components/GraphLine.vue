@@ -44,10 +44,5 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <Line
-    id="line-chart-id"
-    :options="chartOptions"
-    :data="chartData"
-    v-if="chartData && chartData.datasets"
-  />
+  <Line id="line-chart-id" :options="chartOptions" :data="chartData" v-if="chartData && chartData.datasets" />
 </template>

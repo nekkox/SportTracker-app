@@ -62,7 +62,7 @@ export const useFitnessStore = defineStore("fitness", () => {
     const { id } = session.user;
 
     try {
-      console.log('WORKOUT DATE',workout.date);
+      console.log("WORKOUT DATE", workout.date);
       //workout.date = '2024-04-04'
       console.log(workout.date);
       const workoutId = await insertWorkout(workout.date, id);
@@ -219,16 +219,13 @@ export const useFitnessStore = defineStore("fitness", () => {
   };
   getDashboard();
 
-
-
   const byDate = ref([]);
-//Get workouts creaed at given date
+  //Get workouts creaed at given date
   const getWorkoutsbyDate = async (date, options = { order: "ascending" }) => {
-    
-    const formattedDate = useDateWithDashes(date)
+    const formattedDate = useDateWithDashes(date);
     //const gte = dateFormatting(date);
     //const lt = formatDatePlusOne(gte);
-    
+
     try {
       const userStore = useUserStore();
       const { session } = userStore;
@@ -241,7 +238,7 @@ export const useFitnessStore = defineStore("fitness", () => {
 
       // Creating summary of workaout by joining tables: workouts, sets and exercises
       const { data, error, status } = await useSupabaseClient
-      
+
         .from("workouts")
         .select(
           `
@@ -255,8 +252,8 @@ export const useFitnessStore = defineStore("fitness", () => {
         .eq("profile_id", id)
         //.gte("created_at", `${gte}T00:00:00+00:00`)
         //.lt("created_at", `${lt}T00:00:00+00:00`)
-        .eq('created_at2', formattedDate)
-        //.order("created_at", order);
+        .eq("created_at2", formattedDate);
+      //.order("created_at", order);
 
       if (error && status !== 406) throw error;
 
@@ -271,7 +268,6 @@ export const useFitnessStore = defineStore("fitness", () => {
   };
   getWorkoutsbyDate();
 
-
   const todayWorkouts = ref();
   const getTodaysWorkout = async () => {
     try {
@@ -280,7 +276,6 @@ export const useFitnessStore = defineStore("fitness", () => {
       console.error(error.message);
     }
   };
-
 
   return {
     exercises,

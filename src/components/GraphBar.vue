@@ -1,4 +1,4 @@
-<script setup >
+<script setup>
 import { ref, onMounted } from "vue";
 
 import { useGraphStore } from "@/store/graph";
@@ -24,11 +24,11 @@ ChartJS.register(
   CategoryScale,
   LinearScale
 );
-const chartData = ref({ labels: [], datasets: []});
+const chartData = ref({ labels: [], datasets: [] });
 
 const chartOptions = {
   responsive: true,
-  
+
 };
 
 onMounted(async () => {
@@ -42,10 +42,5 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <Bar
-    id="bar-chart-id"
-    :options="chartOptions"
-    :data="chartData"
-    v-if="chartData && chartData.datasets"
-  />
+  <Bar id="bar-chart-id" :options="chartOptions" :data="chartData" v-if="chartData && chartData.datasets" />
 </template>

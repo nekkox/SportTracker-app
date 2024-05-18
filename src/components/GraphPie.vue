@@ -14,7 +14,7 @@ const chartData = ref({ labels: [], datasets: [] });
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    
+
 };
 
 onMounted(async () => {

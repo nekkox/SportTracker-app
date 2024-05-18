@@ -7,30 +7,30 @@ import GraphLine from '@/components/GraphLine.vue'
 const panel = ref([null]);
 </script>
 <template>
- <v-container style="width: 500px;">
-      <h1>Check your progress: </h1>
-      <br>
-      <v-expansion-panels v-model="panel" accordion>
-        <v-expansion-panel>
-          <v-expansion-panel-title>Workout distribution all time (sets & reps)</v-expansion-panel-title>
-          <v-expansion-panel-text>
-            
-            <GraphPie />
-           
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-title>Monthly cumulative weight per exercise</v-expansion-panel-title>
-          <v-expansion-panel-text>
-            <GraphBar />
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-title>Cumulative effort per exercise over time</v-expansion-panel-title>
-          <v-expansion-panel-text>
-            <GraphLine />
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-container>
+  <v-container style="width: 500px;">
+    <h1>Check your progress: </h1>
+    <br>
+    <v-expansion-panels v-model="panel" accordion>
+      <v-expansion-panel>
+        <v-expansion-panel-title>Workout distribution all time (sets & reps)</v-expansion-panel-title>
+        <v-expansion-panel-text>
+
+          <GraphPie />
+
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-title>Monthly cumulative weight per exercise</v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <GraphBar />
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-title>Cumulative effort per exercise over time</v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <GraphLine />
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </v-container>
 </template>
