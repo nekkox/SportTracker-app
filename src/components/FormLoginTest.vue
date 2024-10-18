@@ -47,9 +47,9 @@ const login =async  () => {
 
   else {
     console.log('trying');
-    await userStore.TEST_login(email.value, password.value)
-    router.go('/');
-   /*    .then(xemail => {
+    userStore.TEST_login(email.value, password.value)
+    //router.go('/');
+       .then(xemail => {
         console.log(xemail);
         appStore.showDialog({
           title: "One Time Password login",
@@ -59,9 +59,9 @@ const login =async  () => {
         sleep(3000).then(() => {
           console.log("Redirecting");
           router.go('/');
-        }); */
+        }); 
 
-      /* })
+       })
       .catch(error => {
         console.log(error);
         if (error.toString().includes('Login failed')) {
@@ -72,7 +72,7 @@ const login =async  () => {
           });
         }
 
-      }); */
+      }); 
   }
 };
 
