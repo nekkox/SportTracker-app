@@ -5,9 +5,9 @@ import { useSupabaseClient } from "@/composables/supabase";
 import AppMenu from "./components/AppMenu.vue";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/app";
-
-const fitnessStore = useFitnessStore()
 import { useFitnessStore } from '@/store/fitness'
+const fitnessStore = useFitnessStore()
+
 
 
 const userStore = useUserStore();
@@ -35,6 +35,8 @@ onMounted(async () => {
     //console.log('uuuu', ddd);
 
   }
+
+
 
   useSupabaseClient.auth.onAuthStateChange((_, _session) => {
     userStore.setUserSession(_session);

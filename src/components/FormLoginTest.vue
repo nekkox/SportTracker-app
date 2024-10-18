@@ -28,7 +28,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const login = () => {
+const login =async  () => {
   if (email.value === "") {
     console.log("empty email");
     appStore.showDialog({
@@ -47,20 +47,21 @@ const login = () => {
 
   else {
     console.log('trying');
-    userStore.TEST_login(email.value, password.value)
-      .then(xemail => {
+    await userStore.TEST_login(email.value, password.value)
+    router.go('/');
+   /*    .then(xemail => {
         console.log(xemail);
         appStore.showDialog({
           title: "One Time Password login",
           contents: `Login Successful`,
-          fullscreen: true
+          fullscreen: false
         });
         sleep(3000).then(() => {
           console.log("Redirecting");
           router.go('/');
-        });
+        }); */
 
-      })
+      /* })
       .catch(error => {
         console.log(error);
         if (error.toString().includes('Login failed')) {
@@ -71,7 +72,7 @@ const login = () => {
           });
         }
 
-      });
+      }); */
   }
 };
 
