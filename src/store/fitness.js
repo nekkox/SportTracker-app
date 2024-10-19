@@ -32,7 +32,7 @@ export const useFitnessStore = defineStore("fitness", () => {
       console.log("INSERTING DATA: ", date);
       const { data, error } = await useSupabaseClient
         .from("workouts")
-        .insert({ created_at2: date, profile_id: profile_id })
+        .insert({ created_at: date, profile_id: profile_id })
         .select();
 
       if (error) throw error;
