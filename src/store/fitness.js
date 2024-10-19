@@ -252,7 +252,7 @@ export const useFitnessStore = defineStore("fitness", () => {
         .eq("profile_id", id)
         //.gte("created_at", `${gte}T00:00:00+00:00`)
         //.lt("created_at", `${lt}T00:00:00+00:00`)
-        .eq("created_at2", formattedDate);
+        .eq("created_at", formattedDate);
       //.order("created_at", order);
 
       if (error && status !== 406) throw error;
